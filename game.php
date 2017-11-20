@@ -2,10 +2,11 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<link href="style.css" type="text/css" rel="stylesheet" />
 <title>Sudoku</title>
 </head>
 <body onload="drawBoard()">
-<canvas id="gameScreen" width="576" height="576" style="background-color: black;"></canvas>
+<canvas id="gameScreen" width="576" height="576"></canvas>
 <script>
 var boardSize = 9;
 var gridSize = 64;
