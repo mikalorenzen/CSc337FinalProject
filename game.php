@@ -6,7 +6,18 @@
 <title>Sudoku</title>
 </head>
 <body onload="drawBoard()">
-<canvas id="gameScreen" width="576" height="576"></canvas>
+<div class="overall">
+	<canvas id="gameScreen" width="576" height="576"></canvas>
+	<div class="UI">
+		<h2>Level 1</h2>
+		<p>Login for more levels!</p>
+		<br><br><br>
+		<div class="buttons">login</div><br><br><br>
+		<div class="buttons">register</div><br><br><br>
+		<div class="buttons">scoreboard</div><br><br><br>
+		<p>Time</p>
+	</div>
+</div>
 <script>
 var boardSize = 9;
 var gridSize = 64;
@@ -21,13 +32,16 @@ function drawBoard(){
 			if(i % 3 == 0){
 				context.strokeStyle="red";
 			}else{
-				context.strokeStyle="white";
+				context.strokeStyle="black";
 			}
 			drawLine(0, i*gridSize, gridSize * boardSize, i*gridSize);
 			drawLine(i*gridSize, 0, i*gridSize, gridSize * boardSize);
 		}
 		
 	}
+}
+function readLevel(){
+	
 }
 function drawLine(x0, y0, x1, y1, width){
 	context.beginPath();

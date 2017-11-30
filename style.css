@@ -1,7 +1,29 @@
 @charset "UTF-8";
 canvas {
+    float: left;
+    border:solid 1px black;
+}
+.UI {
+	width: 160px;
+	height: 576px;
+	border: solid 1px black;
+	text-align: center;
+	float: left;
+}
+.buttons {
+	width: 120px;
+	height: 50px;
+	text-align:center;
+	background-color: grey;
+	display: inline-block;
+}
+.buttons:hover {
+	background-color: yellow;
+}
+.overall {
 	padding: 0;
     margin: auto;
-    display: block;
-    background-color: black;
+    height: 578px;
+    width: 740px;
+    border: solid 1px black;
 }
