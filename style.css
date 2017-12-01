@@ -16,6 +16,8 @@ canvas {
 	text-align:center;
 	background-color: grey;
 	display: inline-block;
+	color: white;
+	font-size: 18pt;
 }
 .buttons:hover {
 	background-color: yellow;
