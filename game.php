@@ -23,6 +23,26 @@ var boardSize = 9;
 var gridSize = 64;
 var gameScreen = document.getElementById("gameScreen");
 var context=gameScreen.getContext("2d");
+context.font = "50px Arial";
+var example = [[0,8,0,0,4,0,0,7,5],
+    [6,2,0,5,0,9,0,0,0],
+    [0,4,0,0,0,1,0,0,0],
+    [5,0,0,0,0,7,4,0,0],
+    [7,0,0,1,0,8,0,0,9],
+    [0,0,2,3,0,0,0,0,7],
+    [0,0,0,4,0,0,0,6,0],
+    [0,0,0,6,0,2,0,9,1],
+    [2,9,0,0,1,0,0,8,0]];
+						
+var example_solution = [[1,8,9,2,4,6,3,7,5],
+    [6,2,7,5,3,9,1,4,8],
+    [3,4,5,8,7,1,9,2,6],
+    [5,1,8,9,6,7,4,3,2],
+    [7,3,4,1,2,8,6,5,9],
+    [9,6,2,3,5,4,8,1,7],
+    [8,7,1,4,9,5,2,6,3],
+    [4,5,3,6,8,2,7,9,1],
+    [2,9,6,7,1,3,5,8,4]];
 // Draw a boardSize x boardSize grid board on canvas 
 function drawBoard(){
 	var board = Array(boardSize);
@@ -39,9 +59,18 @@ function drawBoard(){
 		}
 		
 	}
+	readLevel(example);
 }
-function readLevel(){
-	
+
+// Draw puzzle
+function readLevel(arr){
+	for(var y=0; y < boardSize; y++){
+		for(var x=0; x < boardSize; x++){
+			context.fillStyle = "black";
+			context.fillText(arr[y][x].toString(), x * gridSize, y * gridSize);
+			//document.log("x:" + x.toString() + " y:" + y.toString() + " value:" + arr[y][x]);
+		}
+	}
 }
 function drawLine(x0, y0, x1, y1, width){
 	context.beginPath();
