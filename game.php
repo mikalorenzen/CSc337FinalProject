@@ -67,7 +67,9 @@ function readLevel(arr){
 	for(var y=0; y < boardSize; y++){
 		for(var x=0; x < boardSize; x++){
 			context.fillStyle = "black";
-			context.fillText(arr[y][x].toString(), x * gridSize, y * gridSize);
+			if(arr[y][x] != "0"){
+				context.fillText(arr[y][x].toString(), x * gridSize + 18, (y+1) * gridSize - 14);
+			}
 			//document.log("x:" + x.toString() + " y:" + y.toString() + " value:" + arr[y][x]);
 		}
 	}
