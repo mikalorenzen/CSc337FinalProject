@@ -25,7 +25,7 @@ var gameScreen = document.getElementById("gameScreen");
 var context=gameScreen.getContext("2d");
 context.textAlign = "center";
 context.textBaseline = "middle";
-var example = [[0,8,0,0,4,0,0,7,5],
+var puzzles = [[0,8,0,0,4,0,0,7,5],
     [6,2,0,5,0,9,0,0,0],
     [0,4,0,0,0,1,0,0,0],
     [5,0,0,0,0,7,4,0,0],
@@ -39,7 +39,7 @@ var editable = [];
 for(var i = 0; i < boardSize;i++){
 	r = [];
 	for(var j = 0; j < boardSize; j++){
-		if(example[i][j] == 0){
+		if(puzzles[i][j] == 0){
 			r.push(true);
 		}else{
 			r.push(false);
@@ -47,7 +47,7 @@ for(var i = 0; i < boardSize;i++){
 	}
 	editable.push(r);
 }
-var example_solution = [[1,8,9,2,4,6,3,7,5],
+var solution = [[1,8,9,2,4,6,3,7,5],
     [6,2,7,5,3,9,1,4,8],
     [3,4,5,8,7,1,9,2,6],
     [5,1,8,9,6,7,4,3,2],
@@ -79,7 +79,7 @@ function drawBoard(){
 function redraw(){
 	context.clearRect(0, 0, gameScreen.width, gameScreen.height);
 	drawBoard();
-	readLevel(example);
+	readLevel(puzzles);
 }
 // Draw puzzle
 function readLevel(arr){
@@ -129,10 +129,11 @@ function keyDown(event){
 	}
 	n = parseInt(String.fromCharCode(event.keyCode));
 	if(n >= 1 && n <= boardSize){
-		example[cursor.y][cursor.x] = n;
+		puzzles[cursor.y][cursor.x] = n;
+		redraw();
+		drawCursor();
+		checkWinning();
 	}
-	redraw();
-	drawCursor();
 }
 // called when mouse position changed, refresh cursor location
 function mouseMove(event){
@@ -161,7 +162,16 @@ function mousePos(event){
 function invalidPos(pos){
 	return pos.x < 0 || pos.x >= boardSize || pos.y < 0 || pos.y >= boardSize;
 }
-
+function checkWinning(){
+	for(var i = 0; i < boardSize; i++){
+		for(var j = 0; j < boardSize; j++){
+			if(puzzles[i][j] != solution[i][j]){
+				return false;
+			}
+		}
+	}
+	return true;
+}
 // draw unlocked cursor
 function drawCursor(){
 	if(cursor.selected){
