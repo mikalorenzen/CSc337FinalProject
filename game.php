@@ -7,7 +7,7 @@
 </head>
 <body onload="drawBoard()">
 <div class="overall">
-	<canvas id="gameScreen" width="576" height="576" onmousemove="mouseMove(event)"></canvas>
+	<canvas id="gameScreen" width="576" height="576" onmousemove="mouseMove(event)" onclick="mouseClick(event)"></canvas>
 	<div class="UI">
 		<h2>Level 1</h2>
 		<p>Login for more levels!</p>
@@ -23,6 +23,7 @@ var boardSize = 9;
 var gridSize = 64;
 var gameScreen = document.getElementById("gameScreen");
 var context=gameScreen.getContext("2d");
+var selected = false;
 context.font = "50px Arial";
 context.textAlign = "center";
 context.textBaseline = "middle";
@@ -45,7 +46,7 @@ var example_solution = [[1,8,9,2,4,6,3,7,5],
     [8,7,1,4,9,5,2,6,3],
     [4,5,3,6,8,2,7,9,1],
     [2,9,6,7,1,3,5,8,4]];
-var cursor = {x: -1, y: -1, color: "blue"};
+var cursor = {x: -1, y: -1, color: "blue", selectedColor: "darkblue"};
 // Draw a boardSize x boardSize grid board on canvas 
 function drawBoard(){
 	var board = Array(boardSize);
@@ -84,23 +85,27 @@ function drawLine(x0, y0, x1, y1, width){
 	context.lineTo(x1, y1);
 	context.stroke();
 }
-// called when mouse clicked, settle mouse location
+// called when mouse clicked, lock down the cursor's position
 function mouseClick(event){
-	var position = mousePos(event);
-	
+	if(selected){
+		selected = false;
+	 	var pos = mousePos(event);
+		drawCursor(pos);
+	}else{
+		selected = true;
+		context.strokeStyle = cursor.selectedColor;
+		context.lineWidth = "6";
+		context.strokeRect(cursor.x * gridSize+3, cursor.y * gridSize+3, gridSize-6, gridSize-6);
+	}
 }
 // called when mouse position changed, refresh cursor location
 function mouseMove(event){
+	if(selected){
+		return;
+	}
  	var pos = mousePos(event);
 	if(pos.x != cursor.x || pos.y != cursor.y){
-		cursor.x = pos.x;
-		cursor.y = pos.y;
-		context.clearRect(0, 0, gameScreen.width, gameScreen.height);
-		drawBoard();
-		context.strokeStyle = cursor.color;
-		context.lineWidth = "6";
-		context.strokeRect(cursor.x * gridSize+3, cursor.y * gridSize+3, gridSize-6, gridSize-6);
-		console.log("x: " + (pos.x * gridSize).toString() + " y: " + (pos.y * gridSize).toString());
+		drawCursor(pos);
 	}
 }
 // get mouse position on grid
@@ -109,6 +114,18 @@ function mousePos(event){
 	return {
 		x: Math.floor((event.clientX - rect.left)/gridSize),
 		y: Math.floor((event.clientY - rect.top)/gridSize)};
+}
+
+// draw unlocked cursor
+function drawCursor(pos){
+	cursor.x = pos.x;
+	cursor.y = pos.y;
+	context.clearRect(0, 0, gameScreen.width, gameScreen.height);
+	drawBoard();
+	context.strokeStyle = cursor.color;
+	context.lineWidth = "6";
+	context.strokeRect(cursor.x * gridSize+3, cursor.y * gridSize+3, gridSize-6, gridSize-6);
+
 }
 </script>
 </body>
