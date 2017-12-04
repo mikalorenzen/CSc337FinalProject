@@ -7,7 +7,7 @@
 </head>
 <body onload="drawBoard()">
 <div class="overall">
-	<canvas id="gameScreen" width="576" height="576"></canvas>
+	<canvas id="gameScreen" width="576" height="576" onmousemove="mouseMove(event)"></canvas>
 	<div class="UI">
 		<h2>Level 1</h2>
 		<p>Login for more levels!</p>
@@ -24,6 +24,8 @@ var gridSize = 64;
 var gameScreen = document.getElementById("gameScreen");
 var context=gameScreen.getContext("2d");
 context.font = "50px Arial";
+context.textAlign = "center";
+context.textBaseline = "middle";
 var example = [[0,8,0,0,4,0,0,7,5],
     [6,2,0,5,0,9,0,0,0],
     [0,4,0,0,0,1,0,0,0],
@@ -43,6 +45,7 @@ var example_solution = [[1,8,9,2,4,6,3,7,5],
     [8,7,1,4,9,5,2,6,3],
     [4,5,3,6,8,2,7,9,1],
     [2,9,6,7,1,3,5,8,4]];
+var cursor = {x: -1, y: -1, color: "blue"};
 // Draw a boardSize x boardSize grid board on canvas 
 function drawBoard(){
 	var board = Array(boardSize);
@@ -54,6 +57,7 @@ function drawBoard(){
 			}else{
 				context.strokeStyle="black";
 			}
+			context.lineWidth = 1;
 			drawLine(0, i*gridSize, gridSize * boardSize, i*gridSize);
 			drawLine(i*gridSize, 0, i*gridSize, gridSize * boardSize);
 		}
@@ -68,7 +72,7 @@ function readLevel(arr){
 		for(var x=0; x < boardSize; x++){
 			context.fillStyle = "black";
 			if(arr[y][x] != "0"){
-				context.fillText(arr[y][x].toString(), x * gridSize + 18, (y+1) * gridSize - 14);
+				context.fillText(arr[y][x].toString(), (x+0.5) * gridSize, (y+0.5) * gridSize);
 			}
 			//document.log("x:" + x.toString() + " y:" + y.toString() + " value:" + arr[y][x]);
 		}
@@ -79,6 +83,32 @@ function drawLine(x0, y0, x1, y1, width){
 	context.moveTo(x0, y0);
 	context.lineTo(x1, y1);
 	context.stroke();
+}
+// called when mouse clicked, settle mouse location
+function mouseClick(event){
+	var position = mousePos(event);
+	
+}
+// called when mouse position changed, refresh cursor location
+function mouseMove(event){
+ 	var pos = mousePos(event);
+	if(pos.x != cursor.x || pos.y != cursor.y){
+		cursor.x = pos.x;
+		cursor.y = pos.y;
+		context.clearRect(0, 0, gameScreen.width, gameScreen.height);
+		drawBoard();
+		context.strokeStyle = cursor.color;
+		context.lineWidth = "6";
+		context.strokeRect(cursor.x * gridSize+3, cursor.y * gridSize+3, gridSize-6, gridSize-6);
+		console.log("x: " + (pos.x * gridSize).toString() + " y: " + (pos.y * gridSize).toString());
+	}
+}
+// get mouse position on grid
+function mousePos(event){
+	var rect = gameScreen.getBoundingClientRect();
+	return {
+		x: Math.floor((event.clientX - rect.left)/gridSize),
+		y: Math.floor((event.clientY - rect.top)/gridSize)};
 }
 </script>
 </body>
