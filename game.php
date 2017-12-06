@@ -39,7 +39,7 @@ var context=gameScreen.getContext("2d");
 context.textAlign = "center";
 context.textBaseline = "middle";
 var puzzles = null;
-var editable = [];
+var editable = null;
 var solution = null;
 var cursor = {x: -1, y: -1, color: "blue", selectedColor: "darkblue", selected: false};
 // Draw a boardSize x boardSize grid board on canvas 
@@ -62,6 +62,7 @@ function drawBoard(){
 }
 function start(){
 	puzzles = getPuzzleInitial(1);
+	editable = [];
 	for(var i = 0; i < boardSize;i++){
 		r = [];
 		for(var j = 0; j < boardSize; j++){
