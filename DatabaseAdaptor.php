@@ -101,6 +101,12 @@ class DatabaseAdaptor
         // fetchall returns all records in the set as an array
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    
+    public function insertScore($time, $username)
+    {
+        $stmt = $this->DB->prepare("");
+        $stmt->execute();
+    }
 } // End class DatabaseAdaptor
 
 $theDBA = new DatabaseAdaptor();

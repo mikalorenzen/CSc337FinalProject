@@ -46,12 +46,12 @@ if (isset($_POST['RegisterUsername']) && isset($_POST['RegisterPassword'])) {
 }
 
 if (isset($_GET['getPuzzleInitial'])) {
-    $arr = $theDBA->getPuzzle1Initial($_GET['getPuzzleInitial']);
+    $arr = $theDBA->getPuzzleInitial($_GET['getPuzzleInitial']);
     echo json_encode($arr);
 }
 
 if (isset($_GET['getPuzzleCompleted'])) {
-    $arr = $theDBA->getPuzzle1Completed($_GET['getPuzzleCompleted']);
+    $arr = $theDBA->getPuzzleCompleted($_GET['getPuzzleCompleted']);
     echo json_encode($arr);
 }
 

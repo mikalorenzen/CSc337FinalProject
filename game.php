@@ -265,7 +265,7 @@ function getPuzzleInitial(id) {
     			var arrayRow = [9];
     			for (j = 0; j < 9; j++)
     			{
-    				arrayRow[j] = array[(i * 9) + j];
+    				arrayRow[j] = parseInt(array[0]['initial_state'].substring(((i * 9) + j),((i * 9) + j)));
     			}
     			arrayMain[i] = arrayRow;
 			}
@@ -282,14 +282,15 @@ function getPuzzleCompleted(id) {
 
 	anObj.onreadystatechange = function() {
 		if (anObj.readyState == 4 && anObj.status == 200) {
-			var array = JSON.parse(anObj.responseText);
-
+// 			var array = JSON.parse(anObj.responseText);
+			var array = anObj.responseText;
+			
 			for(i = 0; i < 9; i++)
 			{
     			var arrayRow = [9];
     			for (j = 0; j < 9; j++)
     			{
-    				arrayRow[j] = array[(i * 9) + j];
+    				arrayRow[j] = parseInt(array[0]['completed_state'].substring(((i * 9) + j),((i * 9) + j)));
     			}
     			arrayMain[i] = arrayRow;
 			}
