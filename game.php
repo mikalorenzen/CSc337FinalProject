@@ -61,7 +61,7 @@ function drawBoard(){
 	}
 }
 function start(){
-	puzzles = getPuzzleInitial(1);
+	getPuzzleInitial(1);
 	editable = [];
 	for(var i = 0; i < boardSize;i++){
 		r = [];
@@ -74,8 +74,8 @@ function start(){
 		}
 		editable.push(r);
 	}
-	solution = getPuzzleCompleted(1);
-	redraw();
+	getPuzzleCompleted(1);
+	readLevel(puzzles);
 }
 function redraw(){
 	context.clearRect(0, 0, gameScreen.width, gameScreen.height);
@@ -255,7 +255,7 @@ function getPuzzleInitial(id) {
 	var anObj = new XMLHttpRequest();
 	anObj.open("GET", "controller.php?getPuzzleInitial=" + id, true);
 	anObj.send();
-	var arrayInitial = [];
+	puzzles = [];
 	anObj.onreadystatechange = function() {
 		if (anObj.readyState == 4 && anObj.status == 200) {
 			var array = JSON.parse(anObj.responseText);
@@ -266,18 +266,17 @@ function getPuzzleInitial(id) {
     			{
     				arrayRow.push(parseInt(array[0]['initial_state'].charAt((i * 9) + j)));
     			}
-    			arrayInitial.push(arrayRow);
+    			puzzles.push(arrayRow);
 			}
 		}
 	}
-	return arrayInitial;
 }
 
 function getPuzzleCompleted(id) {
 	var anObj = new XMLHttpRequest();
 	anObj.open("GET", "controller.php?getPuzzleCompleted=" + id, true);
 	anObj.send();
-	var arrayCompleted = [];
+	var solution = [];
 	anObj.onreadystatechange = function() {
 		if (anObj.readyState == 4 && anObj.status == 200) {
  			var array = JSON.parse(anObj.responseText);
@@ -288,11 +287,10 @@ function getPuzzleCompleted(id) {
     			{
     				arrayRow.push(parseInt(array[0]['completed_state'].charAt((i * 9) + j)));
     			}
-    			arrayCompleted.push(arrayRow);
+    			solution.push(arrayRow);
 			}
 		}
 	}
-	return arrayCompleted;
 }
 
 </script>
