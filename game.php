@@ -251,7 +251,7 @@ function goToScoreboard(){
 
 // these functions populate the arrays puzzles and solution
 function getPuzzleInitial(id) {
-	var arrayMain = [9][9];
+	var arrayMain = [];
 	var anObj = new XMLHttpRequest();
 	anObj.open("GET", "controller.php?getPuzzleInitial=" + id, true);
 	anObj.send();
@@ -262,37 +262,37 @@ function getPuzzleInitial(id) {
 
 			for(i = 0; i < 9; i++)
 			{
-    			var arrayRow = [9];
+    			var arrayRow = [];
     			for (j = 0; j < 9; j++)
     			{
-    				arrayRow[j] = parseInt(array[0]['initial_state'].substring(((i * 9) + j),((i * 9) + j)));
+    				arrayRow.push(parseInt(array[0]['initial_state'].charAt((i * 9) + j)));
     			}
-    			arrayMain[i] = arrayRow;
+    			arrayMain.push(arrayRow);
 			}
+			console.log(arrayMain);
 		}
 	}
 	return arrayMain;
 }
 
 function getPuzzleCompleted(id) {
-	var arrayMain = [9][9];
+	var arrayMain = [];
 	var anObj = new XMLHttpRequest();
 	anObj.open("GET", "controller.php?getPuzzleCompleted=" + id, true);
 	anObj.send();
 
 	anObj.onreadystatechange = function() {
 		if (anObj.readyState == 4 && anObj.status == 200) {
-// 			var array = JSON.parse(anObj.responseText);
-			var array = anObj.responseText;
+ 			var array = JSON.parse(anObj.responseText);
 			
 			for(i = 0; i < 9; i++)
 			{
-    			var arrayRow = [9];
+    			var arrayRow = [];
     			for (j = 0; j < 9; j++)
     			{
-    				arrayRow[j] = parseInt(array[0]['completed_state'].substring(((i * 9) + j),((i * 9) + j)));
+    				arrayRow.push(parseInt(array[0]['completed_state'].charAt((i * 9) + j)));
     			}
-    			arrayMain[i] = arrayRow;
+    			arrayMain.push(arrayRow);
 			}
 		}
 	}
