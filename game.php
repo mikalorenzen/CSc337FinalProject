@@ -99,6 +99,16 @@ function readLevel(arr){
 		}
 	}
 }
+// this function will fill most of puzzles for debugging purposes
+function debugging(){
+	for(var i = 0; i < boardSize; i++){
+		for(var j = 0; j < boardSize-1; j++){
+			if(puzzles[i][j] == 0){
+				puzzles[i][j] = solution[i][j];
+			}
+		}
+	}
+}
 function drawLine(x0, y0, x1, y1, width){
 	context.beginPath();
 	context.moveTo(x0, y0);
@@ -123,16 +133,51 @@ function mouseClick(event){
 	}
 }
 function keyDown(event){
-	console.log(event.keyCode);
 	if(!cursor.selected){
 		return;
 	}
 	n = parseInt(String.fromCharCode(event.keyCode));
+	console.log(n);
 	if(n >= 1 && n <= boardSize){
+		if(!editable[cursor.y][cursor.x]){
+			return;
+		}
 		puzzles[cursor.y][cursor.x] = n;
 		redraw();
 		drawCursor();
-		checkWinning();
+		if(checkWinning()){
+			alert("you win!");
+		}
+	}else{
+		switch(event.keyCode){
+		case 13:
+			debugging();
+			break;
+		case 37:
+			if(cursor.x > 0){
+				cursor.x -= 1;
+			}
+			break;
+		case 38:
+			if(cursor.y > 0){
+				cursor.y -= 1;
+			}
+			break;
+		case 39:
+			if(cursor.x < boardSize-1){
+				cursor.x += 1;
+			}
+			break;
+		case 40:
+			if(cursor.y < boardSize-1){
+				cursor.y += 1;
+			}
+			break;
+		default:
+			return;
+		}
+		redraw();
+		drawCursor();
 	}
 }
 // called when mouse position changed, refresh cursor location
