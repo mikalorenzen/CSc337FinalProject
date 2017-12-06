@@ -8,7 +8,7 @@ File Name: register.php
 <head>
 <meta charset="UTF-8">
 <title>Register</title>
-<link href="styles.css" type="text/css" rel="stylesheet">
+<link href="style.css" type="text/css" rel="stylesheet">
 </head>
 <body>
 <?php session_start (); ?>

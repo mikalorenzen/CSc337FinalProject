@@ -56,8 +56,8 @@ if (isset($_POST['RegisterUsername']) && isset($_POST['RegisterPassword'])) {
 //     }
 // }
 
-// if (isset($_GET['scores'])) {
-//     $arr = $theDBA->getQuotations();
-//     echo json_encode($arr);
-// }
+if (isset($_GET['scores'])) {
+     $arr = $theDBA->getScores();
+     echo json_encode($arr);
+ }
 ?>

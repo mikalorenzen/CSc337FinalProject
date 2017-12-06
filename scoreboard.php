@@ -8,17 +8,38 @@ File Name: scoreboard.php
 <head>
 <meta charset="UTF-8">
 <title>Scoreboard</title>
-<link href="styles.css" type="text/css" rel="stylesheet">
+<link href="style.css" type="text/css" rel="stylesheet">
 </head>
-<body>
+<body onload="getScores()">
 <?php session_start (); ?>
 	<h1>
 		<b><i>All Scores</i></b>
 	</h1>
 	<br>
-	<br>
-	<?php
-if (isset($_SESSION['registerError']))
-    echo $_SESSION['registerError'];
-?>
+	<div id="toChange"></div>
+
+	<script>
+		var array = [];
+
+		function getScores() {
+			var anObj = new XMLHttpRequest();
+			anObj.open("GET", "controller.php?scores=true", true);
+			anObj.send();
+
+			anObj.onreadystatechange = function() {
+				if (anObj.readyState == 4 && anObj.status == 200) {
+					var array = JSON.parse(anObj.responseText);
+
+					var str = "";
+					for (i = 0; i < array.length; i++)
+					{
+							str += "<p class='score'>User: " + array[i]['username'] + " -- Puzzle #"
+								+ array[i]['id'] + " -- Best Time Completed: " + array[i]['highscore_time']
+								+ " seconds!</p>";
+					}
+					document.getElementById("toChange").innerHTML = str;
+				}
+			}
+		}
+	</script>
 </body>
