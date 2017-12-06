@@ -40,17 +40,6 @@ context.textAlign = "center";
 context.textBaseline = "middle";
 var puzzles = null;
 var editable = [];
-for(var i = 0; i < boardSize;i++){
-	r = [];
-	for(var j = 0; j < boardSize; j++){
-		if(puzzles[i][j] == 0){
-			r.push(true);
-		}else{
-			r.push(false);
-		}
-	}
-	editable.push(r);
-}
 var solution = null;
 var cursor = {x: -1, y: -1, color: "blue", selectedColor: "darkblue", selected: false};
 // Draw a boardSize x boardSize grid board on canvas 
@@ -72,7 +61,19 @@ function drawBoard(){
 	}
 }
 function start(){
-	readLevel(puzzles);
+	puzzles = getPuzzleInitial(1);
+	for(var i = 0; i < boardSize;i++){
+		r = [];
+		for(var j = 0; j < boardSize; j++){
+			if(puzzles[i][j] == 0){
+				r.push(true);
+			}else{
+				r.push(false);
+			}
+		}
+		editable.push(r);
+	}
+	solution = getPuzzleCompleted(1);
 }
 function redraw(){
 	context.clearRect(0, 0, gameScreen.width, gameScreen.height);
@@ -115,6 +116,9 @@ function drawLine(x0, y0, x1, y1, width){
 }
 // called when mouse clicked, lock down the cursor's position
 function mouseClick(event){
+	if(puzzles==null){
+		return;
+	}
  	var pos = mousePos(event);
 	if(invalidPos(pos)){
 		return
@@ -131,7 +135,7 @@ function mouseClick(event){
 	}
 }
 function keyDown(event){
-	if(!cursor.selected){
+	if(!cursor.selected || puzzles == null){
 		return;
 	}
 	n = parseInt(String.fromCharCode(event.keyCode));
@@ -180,7 +184,7 @@ function keyDown(event){
 }
 // called when mouse position changed, refresh cursor location
 function mouseMove(event){
-	if(cursor.selected){
+	if(cursor.selected || puzzles==null){
 		return;
 	}
  	var pos = mousePos(event);
