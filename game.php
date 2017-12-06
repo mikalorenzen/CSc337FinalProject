@@ -5,25 +5,27 @@
 <link href="style.css" type="text/css" rel="stylesheet" />
 <title>Sudoku</title>
 </head>
-<body onload="redraw()" onkeydown="keyDown(event)">
+<body onload="drawBoard()" onkeydown="keyDown(event)">
 <?php session_start (); ?>
 <div class="overall">
 	<canvas id="gameScreen" width="576" height="576" onmousemove="mouseMove(event)" onclick="mouseClick(event)"></canvas>
 	<div class="UI">
 		<h2>Level 1</h2>
 		<p>Login for more levels!</p>
-		<br><br><br>
+		<br><br>
 		<?php
 		if (! isset($_SESSION['user'])) {
 		    echo
-		      "<div class='buttons' onclick='goToLogin()'>login</div><br><br><br>
-		      <div class='buttons' onclick='goToRegister()'>register</div><br><br><br>
-		      <div class='buttons' onclick='goToScoreboard()'>scoreboard</div><br><br><br>";
+		      "<div class='buttons' onclick='goToLogin()'>login</div><br><br>
+		      <div class='buttons' onclick='goToRegister()'>register</div><br><br>
+		      <div class='buttons' onclick='goToScoreboard()'>scoreboard</div><br><br>
+                <div class='buttons' onclick='start()'>start</div><br><br><br>";
 		} else {
 		    echo
-		    "<div class='buttons' onclick='goToLogin()'>logout</div><br><br><br>
-		     <div class='buttons'>my best</div><br><br><br>
-		     <div class='buttons' onclick='goToScoreboard()'>scoreboard</div><br><br><br>";
+		    "<div class='buttons' onclick='goToLogin()'>logout</div><br><br>
+		     <div class='buttons'>my best</div><br><br>
+		     <div class='buttons' onclick='goToScoreboard()'>scoreboard</div><br><br>
+                <div class='buttons' onclick='start()'>start</div><br><br><br>";
 		}
 		?>
 		<p>Time</p>
@@ -36,15 +38,7 @@ var gameScreen = document.getElementById("gameScreen");
 var context=gameScreen.getContext("2d");
 context.textAlign = "center";
 context.textBaseline = "middle";
-var puzzles = [[0,8,0,0,4,0,0,7,5],
-    [6,2,0,5,0,9,0,0,0],
-    [0,4,0,0,0,1,0,0,0],
-    [5,0,0,0,0,7,4,0,0],
-    [7,0,0,1,0,8,0,0,9],
-    [0,0,2,3,0,0,0,0,7],
-    [0,0,0,4,0,0,0,6,0],
-    [0,0,0,6,0,2,0,9,1],
-    [2,9,0,0,1,0,0,8,0]];
+var puzzles = null;
 var editable = [];
 for(var i = 0; i < boardSize;i++){
 	r = [];
@@ -57,15 +51,7 @@ for(var i = 0; i < boardSize;i++){
 	}
 	editable.push(r);
 }
-var solution = [[1,8,9,2,4,6,3,7,5],
-    [6,2,7,5,3,9,1,4,8],
-    [3,4,5,8,7,1,9,2,6],
-    [5,1,8,9,6,7,4,3,2],
-    [7,3,4,1,2,8,6,5,9],
-    [9,6,2,3,5,4,8,1,7],
-    [8,7,1,4,9,5,2,6,3],
-    [4,5,3,6,8,2,7,9,1],
-    [2,9,6,7,1,3,5,8,4]];
+var solution = null;
 var cursor = {x: -1, y: -1, color: "blue", selectedColor: "darkblue", selected: false};
 // Draw a boardSize x boardSize grid board on canvas 
 function drawBoard(){
@@ -85,7 +71,9 @@ function drawBoard(){
 		
 	}
 }
-
+function start(){
+	readLevel(puzzles);
+}
 function redraw(){
 	context.clearRect(0, 0, gameScreen.width, gameScreen.height);
 	drawBoard();
