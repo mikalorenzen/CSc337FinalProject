@@ -256,8 +256,54 @@ function goToScoreboard(){
 	window.location.href = 'scoreboard.php';
 }
 
-//function start(){
-//	readLevel(example);
+// these functions populate the arrays puzzles and solution
+function getPuzzleInitial(id) {
+	var arrayMain = [9][9];
+	var anObj = new XMLHttpRequest();
+	anObj.open("GET", "controller.php?getPuzzleInitial=" + id, true);
+	anObj.send();
+
+	anObj.onreadystatechange = function() {
+		if (anObj.readyState == 4 && anObj.status == 200) {
+			var array = JSON.parse(anObj.responseText);
+
+			for(i = 0; i < 9; i++)
+			{
+    			var arrayRow = [9];
+    			for (j = 0; j < 9; j++)
+    			{
+    				arrayRow[j] = array[(i * 9) + j];
+    			}
+    			arrayMain[i] = arrayRow;
+			}
+		}
+	}
+	return arrayMain;
+}
+
+function getPuzzleCompleted(id) {
+	var arrayMain = [9][9];
+	var anObj = new XMLHttpRequest();
+	anObj.open("GET", "controller.php?getPuzzleCompleted=" + id, true);
+	anObj.send();
+
+	anObj.onreadystatechange = function() {
+		if (anObj.readyState == 4 && anObj.status == 200) {
+			var array = JSON.parse(anObj.responseText);
+
+			for(i = 0; i < 9; i++)
+			{
+    			var arrayRow = [9];
+    			for (j = 0; j < 9; j++)
+    			{
+    				arrayRow[j] = array[(i * 9) + j];
+    			}
+    			arrayMain[i] = arrayRow;
+			}
+		}
+	}
+	return arrayMain;
+}
 
 </script>
 </body>
