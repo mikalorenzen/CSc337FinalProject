@@ -45,6 +45,16 @@ if (isset($_POST['RegisterUsername']) && isset($_POST['RegisterPassword'])) {
     }
 }
 
+if (isset($_GET['getPuzzleInitial'])) {
+    $arr = $theDBA->getPuzzle1Initial();
+    echo json_encode($arr);
+}
+
+if (isset($_GET['getPuzzleCompleted'])) {
+    $arr = $theDBA->getPuzzle1Completed();
+    echo json_encode($arr);
+}
+
 // Scoreboard entry Attempt
 // if (isset($_POST['AddScore']) && isset($_POST['Puzzle'])) {
 //     $result = $theDBA->addQuoteAttempt($_POST['AddQuoteQuotation'], $_POST['AddQuoteAuthor']);

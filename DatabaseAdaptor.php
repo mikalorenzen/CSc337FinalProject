@@ -56,7 +56,7 @@ class DatabaseAdaptor
         // If the result of the statement was more than zero then the username exists, and that's an error
         if ($stmt->rowCount() < 1) {
             $hash = password_hash($password, PASSWORD_DEFAULT);
-            $stmt = $this->DB->prepare("insert into users (username, hash, puzzles_completed, Puzzle_1_Best_Time) values (:username,:hash,'0','0')");
+            $stmt = $this->DB->prepare("insert into users (username, hash, Puzzle_1_Best_Time) values (:username,:hash,'0','0')");
             $stmt->bindParam ( ':username', $username );
             $stmt->bindParam ( ':hash', $hash );
             $stmt->execute();
@@ -75,7 +75,23 @@ class DatabaseAdaptor
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
+    public function getPuzzleInitial($id)
+    {
+        $stmt = $this->DB->prepare("SELECT initial_state FROM puzzles WHERE id = :id");
+        $stmt->bindParam ( ':id', $id );
+        $stmt->execute();
+        // fetchall returns all records in the set as an array
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
     
+    public function getPuzzleCompleted($id)
+    {
+        $stmt = $this->DB->prepare("SELECT completed_state FROM puzzles WHERE id = :id");
+        $stmt->bindParam ( ':id', $id );
+        $stmt->execute();
+        // fetchall returns all records in the set as an array
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 
     // Return all scores using the two tables and a join
     public function getScores()

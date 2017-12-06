@@ -33,8 +33,8 @@ File Name: scoreboard.php
 					var str = "";
 					for (i = 0; i < array.length; i++)
 					{
-							str += "<p class='score'>User: " + array[i]['username'] + " -- Puzzle #"
-								+ array[i]['id'] + " -- Best Time Completed: " + array[i]['highscore_time']
+							str += "<p class='score'><b>User:</b> " + array[i]['username'] + " -- <b>Puzzle #"
+								+ array[i]['id'] + "</b> -- <b>Best Time Completed:</b> " + array[i]['highscore_time']
 								+ " seconds!</p>";
 					}
 					document.getElementById("toChange").innerHTML = str;
