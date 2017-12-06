@@ -38,9 +38,9 @@ var gameScreen = document.getElementById("gameScreen");
 var context=gameScreen.getContext("2d");
 context.textAlign = "center";
 context.textBaseline = "middle";
-var puzzles = null;
-var editable = null;
-var solution = null;
+var puzzles = [];
+var editable = [];
+var solution = [];
 var cursor = {x: -1, y: -1, color: "blue", selectedColor: "darkblue", selected: false};
 // Draw a boardSize x boardSize grid board on canvas 
 function drawBoard(){
@@ -75,6 +75,7 @@ function start(){
 		editable.push(r);
 	}
 	solution = getPuzzleCompleted(1);
+	redraw();
 }
 function redraw(){
 	context.clearRect(0, 0, gameScreen.width, gameScreen.height);
@@ -117,7 +118,7 @@ function drawLine(x0, y0, x1, y1, width){
 }
 // called when mouse clicked, lock down the cursor's position
 function mouseClick(event){
-	if(puzzles==null){
+	if(puzzles.length == 0){
 		return;
 	}
  	var pos = mousePos(event);
@@ -136,7 +137,7 @@ function mouseClick(event){
 	}
 }
 function keyDown(event){
-	if(!cursor.selected || puzzles == null){
+	if(!cursor.selected || puzzles.length == 0){
 		return;
 	}
 	n = parseInt(String.fromCharCode(event.keyCode));
@@ -185,7 +186,7 @@ function keyDown(event){
 }
 // called when mouse position changed, refresh cursor location
 function mouseMove(event){
-	if(cursor.selected || puzzles==null){
+	if(cursor.selected || puzzles.length == 0){
 		return;
 	}
  	var pos = mousePos(event);
@@ -251,52 +252,47 @@ function goToScoreboard(){
 
 // these functions populate the arrays puzzles and solution
 function getPuzzleInitial(id) {
-	var arrayMain = [];
 	var anObj = new XMLHttpRequest();
 	anObj.open("GET", "controller.php?getPuzzleInitial=" + id, true);
 	anObj.send();
-
+	var arrayInitial = [];
 	anObj.onreadystatechange = function() {
 		if (anObj.readyState == 4 && anObj.status == 200) {
 			var array = JSON.parse(anObj.responseText);
-
-			for(i = 0; i < 9; i++)
+			for(var i = 0; i < 9; i++)
 			{
     			var arrayRow = [];
-    			for (j = 0; j < 9; j++)
+    			for (var j = 0; j < 9; j++)
     			{
     				arrayRow.push(parseInt(array[0]['initial_state'].charAt((i * 9) + j)));
     			}
-    			arrayMain.push(arrayRow);
+    			arrayInitial.push(arrayRow);
 			}
-			console.log(arrayMain);
 		}
 	}
-	return arrayMain;
+	return arrayInitial;
 }
 
 function getPuzzleCompleted(id) {
-	var arrayMain = [];
 	var anObj = new XMLHttpRequest();
 	anObj.open("GET", "controller.php?getPuzzleCompleted=" + id, true);
 	anObj.send();
-
+	var arrayCompleted = [];
 	anObj.onreadystatechange = function() {
 		if (anObj.readyState == 4 && anObj.status == 200) {
  			var array = JSON.parse(anObj.responseText);
-			
-			for(i = 0; i < 9; i++)
+			for(var i = 0; i < 9; i++)
 			{
     			var arrayRow = [];
-    			for (j = 0; j < 9; j++)
+    			for (var j = 0; j < 9; j++)
     			{
     				arrayRow.push(parseInt(array[0]['completed_state'].charAt((i * 9) + j)));
     			}
-    			arrayMain.push(arrayRow);
+    			arrayCompleted.push(arrayRow);
 			}
 		}
 	}
-	return arrayMain;
+	return arrayCompleted;
 }
 
 </script>
