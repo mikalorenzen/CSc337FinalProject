@@ -6,15 +6,26 @@
 <title>Sudoku</title>
 </head>
 <body onload="redraw()" onkeydown="keyDown(event)">
+<?php session_start (); ?>
 <div class="overall">
 	<canvas id="gameScreen" width="576" height="576" onmousemove="mouseMove(event)" onclick="mouseClick(event)"></canvas>
 	<div class="UI">
 		<h2>Level 1</h2>
 		<p>Login for more levels!</p>
 		<br><br><br>
-		<div class="buttons">login</div><br><br><br>
-		<div class="buttons">register</div><br><br><br>
-		<div class="buttons">scoreboard</div><br><br><br>
+		<?php
+		if (! isset($_SESSION['user'])) {
+		    echo
+		      "<div class='buttons' onclick='goToLogin()'>login</div><br><br><br>
+		      <div class='buttons' onclick='goToRegister()'>register</div><br><br><br>
+		      <div class='buttons' onclick='goToScoreboard()'>scoreboard</div><br><br><br>";
+		} else {
+		    echo
+		    "<div class='buttons' onclick='goToLogin()'>logout</div><br><br><br>
+		     <div class='buttons'>my best</div><br><br><br>
+		     <div class='buttons' onclick='goToScoreboard()'>scoreboard</div><br><br><br>";
+		}
+		?>
 		<p>Time</p>
 	</div>
 </div>
@@ -229,6 +240,26 @@ function drawCursor(){
 	context.strokeRect(cursor.x * gridSize+3, cursor.y * gridSize+3, gridSize-6, gridSize-6);
 
 }
+
+// these functions handle navigation to other pages 
+function goToLogin(){
+	alert("Warning! Navigating away from this page will lose your progress on the puzzle!");
+	window.location.href = 'login.php';
+}
+
+function goToRegister(){
+	alert("Warning! Navigating away from this page will lose your progress on the puzzle!");
+	window.location.href = 'register.php';
+}
+
+function goToScoreboard(){
+	alert("Warning! Navigating away from this page will lose your progress on the puzzle!");
+	window.location.href = 'scoreboard.php';
+}
+
+//function start(){
+//	readLevel(example);
+
 </script>
 </body>
 </html>
