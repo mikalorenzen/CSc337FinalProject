@@ -23,12 +23,10 @@
 		} else {
 		    echo
 		    "<div class='buttons' onclick='goToLogin()'>logout</div><br><br>
-		     <div class='buttons'>my best</div><br><br>
 		     <div class='buttons' onclick='goToScoreboard()'>scoreboard</div><br><br>
-                <div class='buttons' onclick='start()'>start</div><br><br><br>";
+             <div class='buttons' onclick='start()'>start</div><br><br><br>";
 		}
 		?>
-		<p>Time</p>
 	</div>
 </div>
 <script>
@@ -41,6 +39,8 @@ context.textBaseline = "middle";
 var puzzles = [];
 var editable = [];
 var solution = [];
+var startTime;
+var completionTime;
 var cursor = {x: -1, y: -1, color: "blue", selectedColor: "darkblue", selected: false};
 // Draw a boardSize x boardSize grid board on canvas 
 function drawBoard(){
@@ -62,20 +62,10 @@ function drawBoard(){
 }
 function start(){
 	getPuzzleInitial(1);
-	editable = [];
-	for(var i = 0; i < boardSize;i++){
-		r = [];
-		for(var j = 0; j < boardSize; j++){
-			if(puzzles[i][j] == 0){
-				r.push(true);
-			}else{
-				r.push(false);
-			}
-		}
-		editable.push(r);
-	}
+	console.log(puzzles);
 	getPuzzleCompleted(1);
-	readLevel(puzzles);
+	mouseMove();
+	startTime = new Date();
 }
 function redraw(){
 	context.clearRect(0, 0, gameScreen.width, gameScreen.height);
@@ -219,6 +209,12 @@ function checkWinning(){
 			}
 		}
 	}
+	completionTime = new Date();
+	completionTime -= startTime;
+	completionTime = completionTime / 1000;
+	completionTime = parseInt(completionTime);
+	console.log(completionTime);
+	logTime();
 	return true;
 }
 // draw unlocked cursor
@@ -255,7 +251,6 @@ function getPuzzleInitial(id) {
 	var anObj = new XMLHttpRequest();
 	anObj.open("GET", "controller.php?getPuzzleInitial=" + id, true);
 	anObj.send();
-	puzzles = [];
 	anObj.onreadystatechange = function() {
 		if (anObj.readyState == 4 && anObj.status == 200) {
 			var array = JSON.parse(anObj.responseText);
@@ -269,6 +264,17 @@ function getPuzzleInitial(id) {
     			puzzles.push(arrayRow);
 			}
 		}
+		for(var i = 0; i < boardSize;i++){
+			r = [];
+			for(var j = 0; j < boardSize; j++){
+				if(puzzles[i][j] == 0){
+					r.push(true);
+				}else{
+					r.push(false);
+				}
+			}
+			editable.push(r);
+		}
 	}
 }
 
@@ -276,7 +282,6 @@ function getPuzzleCompleted(id) {
 	var anObj = new XMLHttpRequest();
 	anObj.open("GET", "controller.php?getPuzzleCompleted=" + id, true);
 	anObj.send();
-	var solution = [];
 	anObj.onreadystatechange = function() {
 		if (anObj.readyState == 4 && anObj.status == 200) {
  			var array = JSON.parse(anObj.responseText);
@@ -291,6 +296,12 @@ function getPuzzleCompleted(id) {
 			}
 		}
 	}
+}
+
+function logTime() {
+	var anObj = new XMLHttpRequest();
+	anObj.open("GET", "controller.php?logTime=" + completionTime, true);
+	anObj.send();
 }
 
 </script>

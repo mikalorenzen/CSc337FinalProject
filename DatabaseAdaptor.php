@@ -56,7 +56,7 @@ class DatabaseAdaptor
         // If the result of the statement was more than zero then the username exists, and that's an error
         if ($stmt->rowCount() < 1) {
             $hash = password_hash($password, PASSWORD_DEFAULT);
-            $stmt = $this->DB->prepare("insert into users (username, hash, Puzzle_1_Best_Time) values (:username,:hash,'0','0')");
+            $stmt = $this->DB->prepare("insert into users (username, hash, Puzzle_1_Best_Time) values (:username,:hash,'0')");
             $stmt->bindParam ( ':username', $username );
             $stmt->bindParam ( ':hash', $hash );
             $stmt->execute();
@@ -102,9 +102,9 @@ class DatabaseAdaptor
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     
-    public function insertScore($time, $username)
+    public function logTime($time, $username)
     {
-        $stmt = $this->DB->prepare("");
+        $stmt = $this->DB->prepare("UPDATE users SET Puzzle_1_Best_Time ='" . $time . "' WHERE username = '" . $username . "'");
         $stmt->execute();
     }
 } // End class DatabaseAdaptor

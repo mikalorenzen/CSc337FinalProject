@@ -56,15 +56,9 @@ if (isset($_GET['getPuzzleCompleted'])) {
 }
 
 // Scoreboard entry Attempt
-// if (isset($_POST['AddScore']) && isset($_POST['Puzzle'])) {
-//     $result = $theDBA->addQuoteAttempt($_POST['AddQuoteQuotation'], $_POST['AddQuoteAuthor']);
-//     if ($result) {
-//         header('Location: index.php');
-//     } else {
-//         $_SESSION['addQuoteError'] = 'Invalid entries.';
-//         header('Location: addquote.php');
-//     }
-// }
+if (($_SESSION['user']) != null && isset($_GET['logTime'])) {
+    $theDBA->logTime($_GET['logTime'], $_SESSION['user']);
+}
 
 if (isset($_GET['scores'])) {
      $arr = $theDBA->getScores();
